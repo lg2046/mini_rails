@@ -2,8 +2,6 @@ require "erubis"
 
 module MiniRails
   module View
-    attr_accessor :rendered
-    
     def render(options)
       render_content = case options
       when Symbol
@@ -18,10 +16,14 @@ module MiniRails
       @rendered = true
     end
     
+    def is_rendered?
+      @rendered
+    end
+    
     def render_as_string(action)
       file = MiniRails.root + "/views/#{controller_name}/#{action}.html.erb"
       eruby = Erubis::Eruby.new File.read(file)
-      eruby.result
+      eruby.result(binding)
     end
   end
 end

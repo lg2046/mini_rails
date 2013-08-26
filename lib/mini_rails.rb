@@ -22,7 +22,7 @@ module MiniRails
 
       controller.filter do
         controller.send action_name
-        controller.send :render, action_name.to_sym unless controller.rendered
+        controller.send :render, action_name.to_sym unless controller.is_rendered?
       end
 
       response.finish
