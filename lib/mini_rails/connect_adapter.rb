@@ -8,8 +8,6 @@ class ConnectAdapter
   end
 end
 
-
-
 class PostgresAdapter < ConnectAdapter
   def initialize
     @conn = PG.connect :dbname => 'test'
