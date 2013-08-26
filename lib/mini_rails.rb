@@ -3,6 +3,7 @@ require "mini_rails/dependency"
 require "active_support/all"
 
 require "mini_rails/controller"
+require "mini_rails/model"
 
 require "mini_rails/router"
 
@@ -31,6 +32,9 @@ module MiniRails
 
   def self.set_root(path)
     @root = path
+    $: << @root
+    $: << @root + "/controllers"
+    $: << @root + "/models"
   end
   
   def self.root

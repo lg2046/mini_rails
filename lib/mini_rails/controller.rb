@@ -11,5 +11,9 @@ module MiniRails
     def controller_name
       self.class.name.underscore.gsub("_controller", "")
     end
+    
+    def params
+      request.params.with_indifferent_access
+    end
   end
 end
