@@ -4,8 +4,12 @@ require "active_support/all"
 
 require "mini_rails/controller"
 
+require "mini_rails/router"
+
 module MiniRails
   class Application
+    include Router
+
     def call(env)
       controller_name, action_name = get_controller_and_action(env["PATH_INFO"])
       controller = "#{controller_name.capitalize}Controller".constantize.new
@@ -16,14 +20,20 @@ module MiniRails
       controller.request = request
       controller.response = response
 
-      controller.send action_name
+      controller.filter do
+        controller.send action_name
+        controller.send :render, action_name.to_sym unless controller.rendered
+      end
 
       response.finish
     end
+  end
 
-    def get_controller_and_action(path)
-      _, controller, action = path.split("/")
-      [controller || "home", action || "index"]
-    end
+  def self.set_root(path)
+    @root = path
+  end
+  
+  def self.root
+    @root
   end
 end
